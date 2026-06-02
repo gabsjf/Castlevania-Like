@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -7,28 +9,60 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerControl control;
     private Vector2 movement;
+    [SerializeField] private float forcaPulo = 5f;
+    public bool isGrounded;
+
+    public bool IsGrounded => isGrounded;
+    public bool IsMoving => Mathf.Abs(movement.x) > 0.1f;
+    private SpriteRenderer spriteRenderer;
+
+
+
+
+    void OnJumpPressed(InputAction.CallbackContext context)
+    
+    {
+        if (isGrounded) {
+            rb.linearVelocity = new Vector2(
+        rb.linearVelocity.x,
+        forcaPulo
+    );
+        }
+    }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         control = new PlayerControl();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        control.Player.Jump.performed += OnJumpPressed;
     }
 
     private void OnEnable()
     {
-        control.Enable();
+        if (control != null)
+            control.Enable();
     }
 
     private void OnDisable()
     {
-        control.Disable();
+        if (control != null)
+            control.Disable();
     }
 
 
     void Update()
     {
         movement = control.Player.Move.ReadValue<Vector2>();
-        Debug.Log(movement);
+
+        if (movement.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (movement.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
     }
 
     private void FixedUpdate()
@@ -37,5 +71,21 @@ public class PlayerMovement : MonoBehaviour
             movement.x * speed,
             rb.linearVelocity.y
         );
+    }
+
+    void OnCollisionEnter2D (Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
     }
 }
