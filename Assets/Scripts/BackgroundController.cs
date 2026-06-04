@@ -2,20 +2,36 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private float startPos;
+    private float length, startPosX, startPosY;
     public GameObject cam;
-    public float parallaxEffect;
-    
+
+    public float parallaxEffectX;
+    public float parallaxEffectY;
+
     void Start()
     {
-        startPos = transform.position.x;
+        startPosX = transform.position.x;
+        startPosY = transform.position.y; 
+
+        length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        float distance = cam.transform.position.x * parallaxEffect;
-        transform.position = new Vector3(startPos + distance,transform.position.y,transform.position.z);
+        float tempX = (cam.transform.position.x * (1 - parallaxEffectX));
+        float distanceX = (cam.transform.position.x * parallaxEffectX);
+
+        float distanceY = (cam.transform.position.y * parallaxEffectY);
+
+        transform.position = new Vector3(startPosX + distanceX, startPosY + distanceY, transform.position.z);
+
+        if (tempX > startPosX + length)
+        {
+            startPosX += length;
+        }
+        else if (tempX < startPosX - length)
+        {
+            startPosX -= length;
+        }
     }
 }
