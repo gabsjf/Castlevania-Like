@@ -11,7 +11,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
     [SerializeField] private float forcaPulo = 5f;
     public bool isGrounded;
-
+    [SerializeField] private int maxJumps = 2;
+    private int jumpsRemaining;
+    private PlayerAnimations animations;
     public bool IsGrounded => isGrounded;
     public bool IsMoving => Mathf.Abs(movement.x) > 0.1f;
     private SpriteRenderer spriteRenderer;
@@ -20,20 +22,26 @@ public class PlayerMovement : MonoBehaviour
 
 
     void OnJumpPressed(InputAction.CallbackContext context)
-    
     {
-        if (isGrounded) {
+        if (jumpsRemaining > 0)
+        {
             rb.linearVelocity = new Vector2(
-        rb.linearVelocity.x,
-        forcaPulo
-    );
+                rb.linearVelocity.x,
+                forcaPulo
+            );
+
+            animations.TriggerJump();
+
+            jumpsRemaining--;
         }
     }
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animations = GetComponent<PlayerAnimations>();
         control = new PlayerControl();
+        jumpsRemaining = maxJumps;
         spriteRenderer = GetComponent<SpriteRenderer>();
         control.Player.Jump.performed += OnJumpPressed;
     }
@@ -73,11 +81,12 @@ public class PlayerMovement : MonoBehaviour
         );
     }
 
-    void OnCollisionEnter2D (Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Ground"))
         {
             isGrounded = true;
+            jumpsRemaining = maxJumps;
         }
     }
 
