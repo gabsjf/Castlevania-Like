@@ -14,20 +14,38 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        // Se já morreu, ignora o dano
         if (isDead) return;
 
         health -= damage;
 
         Debug.Log("Vida restante: " + health);
 
+        // --- COMUNICAÇÃO COM O BOSS ---
+        // Procura se esse inimigo tem o cérebro de Boss. Se tiver, avisa que tomou hit!
+        BossAI bossAI = GetComponent<BossAI>();
+        if (bossAI != null)
+        {
+            bossAI.ReceberDano();
+        }
+        // ------------------------------
+
         if (health <= 0)
         {
             Die();
         }
+        else if (bossAI == null)
+        {
+            // Opcional: Se você tiver animação de Hurt para os inimigos comuns,
+            // pode tocar o gatilho "Hurt" do Animator deles aqui!
+            // animator.SetTrigger("Hurt");
+        }
     }
 
-    public void Die() 
+    public void Die()
     {
+        isDead = true; // Garante que a trava lá de cima vai funcionar!
+
         animator.SetTrigger("Dead");
 
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
@@ -45,6 +63,7 @@ public class EnemyHealth : MonoBehaviour
             }
         }
     }
+
     private void DestroyEnemy()
     {
         Destroy(gameObject);
