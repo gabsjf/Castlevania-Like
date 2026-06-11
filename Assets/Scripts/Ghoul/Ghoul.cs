@@ -56,7 +56,7 @@ public class Ghoul : MonoBehaviour
 
             if (health != null)
             {
-                health.tomaDano(10);
+                health.tomaDano(6);
             }
         }
     }
