@@ -5,7 +5,7 @@ public class PlayerAnimations : MonoBehaviour
     private Animator animator;
     private PlayerMovement movement;
 
-    void Awake()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
         movement = GetComponent<PlayerMovement>();
@@ -17,7 +17,13 @@ public class PlayerAnimations : MonoBehaviour
         animator.SetTrigger("PlayerJump");
     }
 
-    void Update()
+    public void TriggerAttack()
+    {
+        animator.ResetTrigger("Attack");
+        animator.SetTrigger("Attack");
+    }
+
+    private void Update()
     {
         animator.SetBool("isWalking", movement.IsMoving);
         animator.SetBool("isGrounded", movement.isGrounded);

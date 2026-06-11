@@ -44,6 +44,13 @@ public class PlayerMovement : MonoBehaviour
         jumpsRemaining = maxJumps;
         spriteRenderer = GetComponent<SpriteRenderer>();
         control.Player.Jump.performed += OnJumpPressed;
+        control.Player.Attack.performed += OnAttackPressed;
+    }
+
+    private void OnAttackPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log("ATAQUE!");
+        animations.TriggerAttack();
     }
 
     private void OnEnable()
