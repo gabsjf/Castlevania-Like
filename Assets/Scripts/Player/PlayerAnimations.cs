@@ -22,7 +22,10 @@ public class PlayerAnimations : MonoBehaviour
         animator.ResetTrigger("Attack");
         animator.SetTrigger("Attack");
     }
-
+    public void TriggerHurt()
+    {
+        animator.SetTrigger("Hurt");
+    }
     private void Update()
     {
         animator.SetBool("isWalking", movement.IsMoving);

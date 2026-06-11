@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrounded => isGrounded;
     public bool IsMoving => Mathf.Abs(movement.x) > 0.1f;
     private SpriteRenderer spriteRenderer;
+    public bool tomouKnockback = false;
 
 
 
@@ -72,16 +73,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (movement.x > 0)
         {
-            spriteRenderer.flipX = false;
+            // Gira o personagem inteiro (e o AttackPoint) para a Direita
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (movement.x < 0)
         {
-            spriteRenderer.flipX = true;
+            // Gira o personagem inteiro (e o AttackPoint) para a Esquerda
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
     private void FixedUpdate()
     {
+        // SE TOMOU KNOCKBACK, PARA TUDO E IGNORA OS COMANDOS DE ANDAR!
+        if (tomouKnockback) return;
+
+        // Se não tomou, anda normalmente:
         rb.linearVelocity = new Vector2(
             movement.x * speed,
             rb.linearVelocity.y

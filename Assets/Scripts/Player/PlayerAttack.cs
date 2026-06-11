@@ -9,6 +9,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float attackRange = 1f;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private int damage = 5;
+    [SerializeField] private float forcaKnockback = 5f;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
@@ -17,6 +19,7 @@ public class PlayerAttack : MonoBehaviour
         control = new PlayerControl();
 
         control.Player.Attack.performed += OnAttackPressed;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()

@@ -59,7 +59,7 @@ public class Corvo : MonoBehaviour
             if (health != null)
             {
                 Debug.Log("Chamando tomaDano");
-                health.tomaDano(6);
+                health.tomaDano(6,transform);
             }
         }
     }

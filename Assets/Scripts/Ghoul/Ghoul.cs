@@ -3,6 +3,7 @@ using UnityEngine;
 public class Ghoul : MonoBehaviour
 {
     [SerializeField] private float speed = 2f;
+    [SerializeField] private float detectionRange = 6f;
 
     private Transform player;
 
@@ -23,28 +24,36 @@ public class Ghoul : MonoBehaviour
 
     private void Update()
     {
-
-        Debug.Log("Perseguindo...");
         if (player == null) return;
 
-        Vector2 targetPosition = new Vector2(
-            player.position.x,
-            transform.position.y
-        );
+        // 2. Calculamos a distância entre o Ghoul e o Player
+        float distance = Vector2.Distance(transform.position, player.position);
 
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            targetPosition,
-            speed * Time.deltaTime
-        );
+        // 3. O Ghoul só persegue se a distância for menor ou igual ao detectionRange
+        if (distance <= detectionRange)
+        {
+            Debug.Log("Perseguindo...");
 
-        if (player.position.x > transform.position.x)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            Vector2 targetPosition = new Vector2(
+                player.position.x,
+                transform.position.y
+            );
+
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                targetPosition,
+                speed * Time.deltaTime
+            );
+
+            // Gira o Ghoul de acordo com a posição do player
+            if (player.position.x > transform.position.x)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
         }
     }
 
@@ -56,7 +65,7 @@ public class Ghoul : MonoBehaviour
 
             if (health != null)
             {
-                health.tomaDano(6);
+                health.tomaDano(6,transform);
             }
         }
     }
