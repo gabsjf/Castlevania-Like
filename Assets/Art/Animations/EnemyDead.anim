@@ -21,20 +21,16 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -737181413011840186, guid: 16f617bc63a1714448521e3405fe9dd8, type: 3}
-    - time: 0.083333336
-      value: {fileID: 1278183561560509872, guid: 3fb6da94614d3f94193d18d58d1593c3, type: 3}
-    - time: 0.16666667
       value: {fileID: -2130145742107678009, guid: 6ac2e17199d29d14dbd61903516220eb, type: 3}
-    - time: 0.25
+    - time: 0.083333336
       value: {fileID: 3543433116065506159, guid: 353a2c6492ad55c4f9e408bb39247c4f, type: 3}
-    - time: 0.33333334
+    - time: 0.16666667
       value: {fileID: -6236713194945363207, guid: 2b0bdc5f068f55649ad8d00e7fc028ad, type: 3}
-    - time: 0.41666666
+    - time: 0.25
       value: {fileID: -4641077647485429793, guid: ecb3c0c2c7085624fa1ac71e258841fd, type: 3}
-    - time: 0.5
+    - time: 0.33333334
       value: {fileID: 6472947323643325921, guid: 2f25400f3bc368e4c91544c3cc732daf, type: 3}
-    - time: 0.5833333
+    - time: 0.41666666
       value: {fileID: -285156463949586906, guid: 03efd94d1745c834eb49e008d681d08b, type: 3}
     attribute: m_Sprite
     path: 
@@ -58,8 +54,6 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -737181413011840186, guid: 16f617bc63a1714448521e3405fe9dd8, type: 3}
-    - {fileID: 1278183561560509872, guid: 3fb6da94614d3f94193d18d58d1593c3, type: 3}
     - {fileID: -2130145742107678009, guid: 6ac2e17199d29d14dbd61903516220eb, type: 3}
     - {fileID: 3543433116065506159, guid: 353a2c6492ad55c4f9e408bb39247c4f, type: 3}
     - {fileID: -6236713194945363207, guid: 2b0bdc5f068f55649ad8d00e7fc028ad, type: 3}
@@ -71,7 +65,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666666
+    m_StopTime: 0.5833333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -90,4 +84,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.5833333
+    functionName: DestroyEnemy
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
