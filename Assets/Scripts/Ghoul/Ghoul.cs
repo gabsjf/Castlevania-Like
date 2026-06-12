@@ -5,55 +5,37 @@ public class Ghoul : MonoBehaviour
     [SerializeField] private float speed = 2f;
     [SerializeField] private float detectionRange = 6f;
 
+    // cooldown para não dar dano múltiplas vezes seguidas
+    [SerializeField] private float tempoCooldownDano = 1.2f;
+    private float timerDano = 0f;
+
     private Transform player;
 
     private void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-
         if (playerObj != null)
-        {
             player = playerObj.transform;
-            Debug.Log("Player encontrado!");
-        }
-        else
-        {
-            Debug.Log("Player NÃO encontrado!");
-        }
     }
 
     private void Update()
     {
         if (player == null) return;
 
-        // 2. Calculamos a distância entre o Ghoul e o Player
-        float distance = Vector2.Distance(transform.position, player.position);
+        // decrementa o timer a cada frame
+        if (timerDano > 0)
+            timerDano -= Time.deltaTime;
 
-        // 3. O Ghoul só persegue se a distância for menor ou igual ao detectionRange
+        float distance = Vector2.Distance(transform.position, player.position);
         if (distance <= detectionRange)
         {
-            Debug.Log("Perseguindo...");
+            Vector2 targetPosition = new Vector2(player.position.x, transform.position.y);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
-            Vector2 targetPosition = new Vector2(
-                player.position.x,
-                transform.position.y
-            );
-
-            transform.position = Vector2.MoveTowards(
-                transform.position,
-                targetPosition,
-                speed * Time.deltaTime
-            );
-
-            // Gira o Ghoul de acordo com a posição do player
             if (player.position.x > transform.position.x)
-            {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-            }
             else
-            {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
         }
     }
 
@@ -61,11 +43,17 @@ public class Ghoul : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            PlayerHealth health = col.gameObject.GetComponent<PlayerHealth>();
+            Debug.Log($"Colisão! Timer: {timerDano} | Ghoul: {gameObject.name}");
 
-            if (health != null)
+            if (timerDano <= 0)
             {
-                health.tomaDano(6,transform);
+                PlayerHealth health = col.gameObject.GetComponent<PlayerHealth>();
+                if (health != null)
+                {
+                    Debug.Log($"Dano aplicado por: {gameObject.name} | Vida antes: {health.vidaAtual}");
+                    health.tomaDano(1, transform);
+                    timerDano = tempoCooldownDano;
+                }
             }
         }
     }
