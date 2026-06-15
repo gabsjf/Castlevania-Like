@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &9093409895007674817
+--- !u!1 &4287570007748508343
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,43 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8349588571261487524}
-  - component: {fileID: 3233393706710640205}
-  - component: {fileID: 1049442692203215713}
-  - component: {fileID: 1819061394125702398}
-  - component: {fileID: 1287519267902479303}
-  - component: {fileID: 3551838101821673868}
-  - component: {fileID: 470145744140642916}
+  - component: {fileID: 4583870985364595805}
+  - component: {fileID: 5570610893748580427}
+  - component: {fileID: 4140800627238522308}
+  - component: {fileID: 8356767390631660022}
+  - component: {fileID: 7853185540063777938}
+  - component: {fileID: 4387160847935572319}
+  - component: {fileID: 375698670970630915}
   m_Layer: 3
-  m_Name: burning-ghoul
+  m_Name: Ghoul
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8349588571261487524
+--- !u!4 &4583870985364595805
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
+  m_GameObject: {fileID: 4287570007748508343}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.5589695, y: -2.8960342, z: 0}
-  m_LocalScale: {x: 5.4413, y: 5.4413, z: 5.4413}
+  m_LocalPosition: {x: 14.27, y: -1.67, z: 0}
+  m_LocalScale: {x: 5.8828764, y: 5.8828764, z: 5.8828764}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &3233393706710640205
+--- !u!212 &5570610893748580427
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
+  m_GameObject: {fileID: 4287570007748508343}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -86,27 +86,27 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 2094899782320391524, guid: 7d885abf035a8ab4fb9b7a7b9492a815, type: 3}
+  m_Sprite: {fileID: -7730486409907412771, guid: 3b874de3e5dd3d04e88659e93efcaf2f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.37, y: 0.41}
+  m_Size: {x: 0.39, y: 0.42}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!95 &1049442692203215713
+--- !u!95 &4140800627238522308
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
+  m_GameObject: {fileID: 4287570007748508343}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: -9038907848772378873, guid: 7d885abf035a8ab4fb9b7a7b9492a815, type: 3}
+  m_Controller: {fileID: 9100000, guid: 51c0a3cb53aa8364ba052e23e788930d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -118,27 +118,45 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1819061394125702398
+--- !u!114 &8356767390631660022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
+  m_GameObject: {fileID: 4287570007748508343}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfef02e0af186d2469f1c73a3d6e23ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   health: 3
---- !u!50 &1287519267902479303
+  somDeMorte: {fileID: 8300000, guid: cd46da14fc519db449952a17d3e8e6a5, type: 3}
+  volumeMorte: 1
+  triggerMorte: Dead
+--- !u!114 &7853185540063777938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4287570007748508343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ccd132cb5e85d4f8e0f4f40adef155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ghoul
+  speed: 5
+  detectionRange: 9
+  tempoCooldownDano: 1.2
+--- !u!50 &4387160847935572319
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
+  m_GameObject: {fileID: 4287570007748508343}
   m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -158,13 +176,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &3551838101821673868
+--- !u!61 &375698670970630915
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
+  m_GameObject: {fileID: 4287570007748508343}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -192,29 +210,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.060000002, y: 0.205}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.6621622, y: 0}
-    oldSize: {x: 0.37, y: 0.41}
-    newSize: {x: 0.37, y: 0.41}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.39, y: 0.42}
+    newSize: {x: 0.39, y: 0.42}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.3, y: 0.41}
+  m_Size: {x: 0.39, y: 0.42}
   m_EdgeRadius: 0
---- !u!114 &470145744140642916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9093409895007674817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39ccd132cb5e85d4f8e0f4f40adef155, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ghoul
-  speed: 6
-  detectionRange: 12

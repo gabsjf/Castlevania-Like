@@ -4,6 +4,14 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int health = 3;
 
+    [Header("Som")]
+    [SerializeField] private AudioClip somDeMorte;
+    [Range(0f, 1f)]
+    [SerializeField] private float volumeMorte = 1f;
+
+    [Header("Animações")]
+    [SerializeField] private string triggerMorte = "Dead";
+
     private Animator animator;
     private bool isDead = false;
 
@@ -46,7 +54,19 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true; // Garante que a trava lá de cima vai funcionar!
 
-        animator.SetTrigger("Dead");
+        if (somDeMorte != null)
+        {
+            // Cria um player de som 2D temporário para evitar a atenuação 3D da Unity
+            GameObject tempAudio = new GameObject("TempAudio_DeathSFX");
+            AudioSource source = tempAudio.AddComponent<AudioSource>();
+            source.clip = somDeMorte;
+            source.volume = volumeMorte;
+            source.spatialBlend = 0f; // 2D (sem perda de volume pela distância da câmera no eixo Z)
+            source.Play();
+            Destroy(tempAudio, somDeMorte.length);
+        }
+
+        animator.SetTrigger(triggerMorte);
 
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
 

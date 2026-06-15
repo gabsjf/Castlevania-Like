@@ -4,12 +4,10 @@ public class Corvo : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
     [SerializeField] private float detectionRange = 6f;
-    private Animator animator;
     private Transform player;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
 
         if (playerObj != null)
@@ -26,8 +24,6 @@ public class Corvo : MonoBehaviour
 
         if (distance <= detectionRange)
         {
-            animator.SetBool("IsFly", true);
-
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 player.position,
@@ -42,10 +38,6 @@ public class Corvo : MonoBehaviour
             {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
             }
-        }
-        else
-        {
-            animator.SetBool("IsFly", false);
         }
     }
 
