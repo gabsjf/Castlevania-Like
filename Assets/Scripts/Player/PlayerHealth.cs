@@ -30,12 +30,13 @@ public class PlayerHealth : MonoBehaviour
         animations = GetComponent<PlayerAnimations>();
         movimento = GetComponent<PlayerMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        vidaAtual = coracoesMax * 2f; // Define a vida antes do HeartDisplay ler no Start
     }
-
 
     void Start()
     {
-        vidaAtual = coracoesMax * 2f; // começa com todos os corações cheios
+        OnHealthChanged?.Invoke(); // Garante que a HUD seja atualizada se precisar
     }
 
     public void tomaDano(int dano, Transform posicaoInimigo)

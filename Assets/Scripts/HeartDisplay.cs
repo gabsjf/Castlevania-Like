@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HeartDisplay : MonoBehaviour
@@ -8,7 +8,7 @@ public class HeartDisplay : MonoBehaviour
     public Sprite heartHalf;
     public Sprite heartEmpty;
 
-    [Header("Refer�ncias")]
+    [Header("Referências")]
     public PlayerHealth playerHealth;
     public Transform heartsContainer; // o pai dos slots no Canvas
     public GameObject heartPrefab;    // prefab com um Image component
@@ -33,15 +33,14 @@ public class HeartDisplay : MonoBehaviour
     {
         for (int i = 0; i < heartSlots.Length; i++)
         {
-            int slotInvertido = heartSlots.Length - 1 - i;
             float hpForThisSlot = Mathf.Clamp(playerHealth.vidaAtual - (i * 2f), 0f, 2f);
 
             if (hpForThisSlot >= 2f)
-                heartSlots[slotInvertido].sprite = heartFull;
+                heartSlots[i].sprite = heartFull;
             else if (hpForThisSlot >= 1f)
-                heartSlots[slotInvertido].sprite = heartHalf;
+                heartSlots[i].sprite = heartHalf;
             else
-                heartSlots[slotInvertido].sprite = heartEmpty;
+                heartSlots[i].sprite = heartEmpty;
         }
     }
 
