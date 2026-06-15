@@ -1,11 +1,15 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    // Número de corações (cada coração = 2 de HP internamente, para suportar meios corações)
+    // NÃºmero de coraÃ§Ãµes (cada coraÃ§Ã£o = 2 de HP internamente, para suportar meios coraÃ§Ãµes)
     [SerializeField] private int coracoesMax = 6;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip somDeDano;
+    private AudioSource audioSource;
 
     private PlayerAnimations animations;
     [SerializeField] private float forcaKnockback = 10f;
@@ -17,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerMovement movimento;
 
-    // Vida agora é float para suportar meios corações (1 = meio, 2 = cheio)
+    // Vida agora Ã© float para suportar meios coraÃ§Ãµes (1 = meio, 2 = cheio)
     public float vidaAtual { get; private set; }
     public int CoracoesMax => coracoesMax;
 
@@ -30,6 +34,8 @@ public class PlayerHealth : MonoBehaviour
         animations = GetComponent<PlayerAnimations>();
         movimento = GetComponent<PlayerMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
         
         vidaAtual = coracoesMax * 2f; // Define a vida antes do HeartDisplay ler no Start
     }
@@ -44,6 +50,11 @@ public class PlayerHealth : MonoBehaviour
         if (isInvincible) return;
 
         animations.TriggerHurt();
+
+        if (somDeDano != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(somDeDano);
+        }
 
         vidaAtual = Mathf.Max(0, vidaAtual - dano);
         OnHealthChanged?.Invoke(); // avisa a HUD
@@ -63,7 +74,7 @@ public class PlayerHealth : MonoBehaviour
             StartCoroutine(RotinaInvencibilidade());
     }
 
-    // Opcional: curar o jogador (útil para poções, etc.)
+    // Opcional: curar o jogador (Ãºtil para poÃ§Ãµes, etc.)
     public void Curar(float quantidade)
     {
         vidaAtual = Mathf.Min(coracoesMax * 2f, vidaAtual + quantidade);
