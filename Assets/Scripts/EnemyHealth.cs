@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private int health = 3;
+    [SerializeField] private int health = 3; // Funciona como Max Health
+    private int currentHealth;
+
+    // Evento disparado quando o inimigo toma dano (passa a vida atual e a vida máxima)
+    public event System.Action<int, int> OnHealthChanged;
 
     [Header("Som")]
     [SerializeField] private AudioClip somDeMorte;
@@ -12,12 +16,16 @@ public class EnemyHealth : MonoBehaviour
     [Header("Animações")]
     [SerializeField] private string triggerMorte = "Dead";
 
+    [Header("Fim de Jogo (Apenas para Bosses)")]
+    public WinManager gerenciadorVitoria; // Deixe vazio para inimigos comuns
+
     private Animator animator;
     private bool isDead = false;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        currentHealth = health; // Inicializa a vida atual com o valor máximo
     }
 
     public void TakeDamage(int damage)
@@ -25,34 +33,36 @@ public class EnemyHealth : MonoBehaviour
         // Se já morreu, ignora o dano
         if (isDead) return;
 
-        health -= damage;
+        currentHealth -= damage;
+        
+        // Avisa quem estiver escutando (ex: a UI) que a vida mudou
+        OnHealthChanged?.Invoke(currentHealth, health);
 
-        Debug.Log("Vida restante: " + health);
-
-        // --- COMUNICAÇÃO COM O BOSS ---
-        // Procura se esse inimigo tem o cérebro de Boss. Se tiver, avisa que tomou hit!
+        // --- COMUNICAÇÃO COM O BOSS E MORTE ---
         BossAI bossAI = GetComponent<BossAI>();
-        if (bossAI != null)
-        {
-            bossAI.ReceberDano();
-        }
-        // ------------------------------
 
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
-        else if (bossAI == null)
+        else if (bossAI != null)
         {
-            // Opcional: Se você tiver animação de Hurt para os inimigos comuns,
-            // pode tocar o gatilho "Hurt" do Animator deles aqui!
-            // animator.SetTrigger("Hurt");
+            // Só toca animação de dor se ele NÃO morreu.
+            // Isso evita que a Unity tente tocar "Hurt" e "Dead" ao mesmo tempo e trave!
+            bossAI.ReceberDano();
         }
+        // ------------------------------
     }
 
     public void Die()
     {
         isDead = true; // Garante que a trava lá de cima vai funcionar!
+
+        // Se esse inimigo for o Boss final (tiver o gerenciador linkado), aciona o fim de jogo!
+        if (gerenciadorVitoria != null)
+        {
+            gerenciadorVitoria.DeclararVitoria();
+        }
 
         if (somDeMorte != null)
         {

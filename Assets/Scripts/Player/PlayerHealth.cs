@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -104,8 +104,54 @@ public class PlayerHealth : MonoBehaviour
         isInvincible = false;
     }
 
+    // Chamado pelo VoidZone quando o player cai no buraco
+    public void TomaDanoDeQueda(Vector3 posicaoSegura)
+    {
+        if (vidaAtual <= 0) return; // Se já morreu caindo, ignora
+
+        // Dano de meio coração (1 de HP interno)
+        vidaAtual = Mathf.Max(0, vidaAtual - 1);
+        OnHealthChanged?.Invoke(); 
+        
+        if (somDeDano != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(somDeDano);
+        }
+
+        if (vidaAtual <= 0)
+        {
+            Morrer();
+        }
+        else
+        {
+            // Teletransporta de volta pra plataforma segura e reseta a velocidade de queda
+            transform.position = posicaoSegura;
+            rb.linearVelocity = Vector2.zero;
+            StartCoroutine(RotinaInvencibilidade());
+        }
+    }
+
     void Morrer()
     {
-        Destroy(gameObject);
+        // Desativa a colisão para ele não ser empurrado por inimigos enquanto morre
+        GetComponent<Collider2D>().enabled = false;
+        
+        // Zera a gravidade e o movimento para ele ficar paradinho (opcional, ou pode deixar ele cair)
+        rb.linearVelocity = Vector2.zero;
+        rb.gravityScale = 0f;
+
+        // Desliga o controle de movimento para o jogador não andar mais
+        if (movimento != null) movimento.enabled = false;
+
+        // Avisa o Manager para escurecer a tela e reiniciar o jogo
+        if (GameOverManager.Instance != null)
+        {
+            GameOverManager.Instance.IniciarGameOver();
+        }
+        else
+        {
+            // Fallback caso esqueça de colocar o Manager na cena
+            Destroy(gameObject);
+        }
     }
 }

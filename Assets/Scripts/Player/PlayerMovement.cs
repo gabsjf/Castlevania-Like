@@ -19,9 +19,9 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public bool tomouKnockback = false;
 
-
-
-
+    [Header("Sistema do Void")]
+    public Vector3 ultimaPosicaoSegura;
+    private float tempoNoChao = 0f;
     void OnJumpPressed(InputAction.CallbackContext context)
     {
         if (jumpsRemaining > 0)
@@ -64,6 +64,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if (control != null)
             control.Disable();
+            
+        // Garante que o player pare a animação de andar se for desativado
+        movement = Vector2.zero; 
     }
 
 
@@ -80,6 +83,20 @@ public class PlayerMovement : MonoBehaviour
         {
             // Gira o personagem inteiro (e o AttackPoint) para a Esquerda
             transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+
+        if (isGrounded)
+        {
+            tempoNoChao += Time.deltaTime;
+            // Se o player ficar parado ou correndo no chão por mais de meio segundo, salva o ponto
+            if (tempoNoChao > 0.5f)
+            {
+                ultimaPosicaoSegura = transform.position;
+            }
+        }
+        else
+        {
+            tempoNoChao = 0f;
         }
     }
 

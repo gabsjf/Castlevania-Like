@@ -35,11 +35,16 @@ public class BossAI : MonoBehaviour
     private float nextSpellTime = 0f;
 
     // =====================================================================
-    // REFERÊNCIAS
+    // REFERÊNCIAS E COMBATE
     // =====================================================================
     [Header("Spell")]
     [SerializeField] private GameObject spellPrefab;
     [SerializeField] private float spellOffsetY = 3f;
+
+    [Header("Ataque Melee")]
+    public Transform attackPoint;       // Objeto vazio na ponta da espada
+    public float attackHitboxRadius = 1.5f; // Tamanho do corte
+    public int meleeDamage = 2;         // Dano da espadada
 
     private Transform player;
     private Animator anim;
@@ -157,7 +162,20 @@ public class BossAI : MonoBehaviour
     // O INIMIGO HEALTH CHAMA ESSA FUNÇÃO AQUI:
     public void ReceberDano()
     {
+        anim.ResetTrigger("Hurt"); // <- ISSO limpa o "acúmulo" de hits na memória da Unity
         EntrarEstado(BossState.Hurt);
+        
+        // Libera o Boss automaticamente após 0.4 segundos (tempo ajustado para ver a dor!)
+        Invoke(nameof(SairDoHurt), 0.4f); 
+    }
+
+    private void SairDoHurt()
+    {
+        if (currentState == BossState.Hurt)
+        {
+            anim.ResetTrigger("Hurt"); // Garante que não vai tocar denovo do nada
+            currentState = BossState.Idle;
+        }
     }
 
     public void OnActionAnimationEnd()
@@ -171,6 +189,27 @@ public class BossAI : MonoBehaviour
 
         Vector3 posicao = player.position + new Vector3(0f, spellOffsetY, 0f);
         Instantiate(spellPrefab, posicao, Quaternion.identity);
+    }
+
+    // Essa função deve ser chamada pela janela Animation no frame exato do corte da espada!
+    public void DarDanoMelee()
+    {
+        if (attackPoint == null) return;
+
+        // Cria um círculo invisível na ponta da espada e procura quem ele acertou
+        Collider2D[] acertados = Physics2D.OverlapCircleAll(attackPoint.position, attackHitboxRadius);
+
+        foreach (Collider2D hit in acertados)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                PlayerHealth ph = hit.GetComponent<PlayerHealth>();
+                if (ph != null)
+                {
+                    ph.tomaDano(meleeDamage, transform);
+                }
+            }
+        }
     }
 
     // =====================================================================
@@ -197,6 +236,28 @@ public class BossAI : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, spellRange);
+
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(attackPoint.position, attackHitboxRadius);
+        }
     }
 #endif
+
+    // =====================================================================
+    // CAUSAR DANO DE CONTATO
+    // =====================================================================
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                // Dá 1 de dano e manda a posição do boss para o player calcular o knockback
+                playerHealth.tomaDano(1, transform);
+            }
+        }
+    }
 }
